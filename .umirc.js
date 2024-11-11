@@ -76,6 +76,12 @@ export default defineConfig({
                     path: 'bookadd',
                     component: './Book/BookAdd',
                 },
+                {
+                    name: '编辑书籍',
+                    path: 'bookedit/:id',
+                    component: './Book/BookEdit',
+                    hideInMenu: true,
+                },
             ],
         },
         {
