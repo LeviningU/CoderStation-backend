@@ -63,7 +63,9 @@ export default function User() {
     }
 
     function editHandle(row) {
-        navigate(`/user/useredit/${row._id}`);
+        if (row._id) {
+            navigate(`/user/useredit/${row._id}`);
+        }
     }
 
     const columns = [

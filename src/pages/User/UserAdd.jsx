@@ -19,7 +19,6 @@ export default function UserAdd(props) {
         qq: '',
         wechat: '',
         intro: '',
-        captcha: 'facj',
     });
 
     const navigate = useNavigate();

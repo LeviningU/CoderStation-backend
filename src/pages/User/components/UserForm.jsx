@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Image, Input, Upload } from 'antd';
@@ -11,9 +11,14 @@ export default function UserForm({
 }) {
     const formRef = useRef();
 
-    if (type === 'edit' && formRef.current) {
-        formRef.current.setFieldsValue(userInfo);
-    }
+    useEffect(() => {
+        if (type === 'edit' && formRef.current) {
+            if (formRef.current.getFieldValue('loginId')) {
+                return;
+            }
+            formRef.current.setFieldsValue({ ...userInfo, avatar: [] });
+        }
+    }, [userInfo, type]);
 
     function updateInfo(newContent, key) {
         setUserInfo({ ...userInfo, [key]: newContent });
@@ -23,7 +28,11 @@ export default function UserForm({
     if (type === 'edit') {
         avatarPreview = (
             <Form.Item label="当前头像" name="avatarPreview">
-                <Image src={userInfo?.avatar} width={100} />
+                {userInfo?.avatar ? (
+                    <Image src={userInfo?.avatar} width={100} />
+                ) : (
+                    <div>暂无头像</div>
+                )}
             </Form.Item>
         );
     }
@@ -31,7 +40,7 @@ export default function UserForm({
     return (
         <Form
             name="basic"
-            initialValues={userInfo}
+            initialValues={{ ...userInfo, avatar: [] }}
             autoComplete="off"
             ref={formRef}
             onFinish={submitHandle}
@@ -68,7 +77,12 @@ export default function UserForm({
 
             {avatarPreview}
 
-            <Form.Item label="上传头像" name="avatar">
+            <Form.Item
+                label="上传头像"
+                name="avatar"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e.fileList}
+            >
                 <Upload
                     listType="picture-card"
                     key={userInfo?._id}

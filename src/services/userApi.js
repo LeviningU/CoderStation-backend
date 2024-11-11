@@ -16,6 +16,7 @@ export function getUserByIdApi(id) {
 }
 
 export function addUserApi(newUserInfo) {
+    newUserInfo.type = 'background';
     return request('/api/user', {
         method: 'POST',
         data: newUserInfo,

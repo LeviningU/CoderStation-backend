@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Image, Input, Radio, Upload } from 'antd';
@@ -13,9 +13,14 @@ export default function AdminForm({
 }) {
     const formRef = useRef();
 
-    if (type === 'edit' && formRef.current) {
-        formRef.current.setFieldsValue(adminInfo);
-    }
+    useEffect(() => {
+        if (type === 'edit' && formRef.current) {
+            if (formRef.current.getFieldValue('loginId')) {
+                return;
+            }
+            formRef.current.setFieldsValue({ ...adminInfo, avatar: [] });
+        }
+    }, [adminInfo, type]);
 
     function updateInfo(newContent, key) {
         setAdminInfo({ ...adminInfo, [key]: newContent });
@@ -45,7 +50,7 @@ export default function AdminForm({
     return (
         <Form
             name="basic"
-            initialValues={adminInfo}
+            initialValues={{ ...adminInfo, avatar: [] }}
             autoComplete="off"
             ref={formRef}
             onFinish={submitHandle}
@@ -126,7 +131,12 @@ export default function AdminForm({
 
             {avatarPreview}
 
-            <Form.Item label="上传头像" name="avatar">
+            <Form.Item
+                label="上传头像"
+                name="avatar"
+                valuePropName="fileList"
+                getValueFromEvent={(e) => e.fileList}
+            >
                 <Upload
                     listType="picture-card"
                     key={adminInfo?._id}

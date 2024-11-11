@@ -19,9 +19,11 @@ export default function UserEdit() {
     const [userInfo, setUserInfo] = useState({});
 
     useEffect(() => {
-        getUserByIdApi(id).then((res) => {
-            setUserInfo(res.data);
-        });
+        if (id) {
+            getUserByIdApi(id).then((res) => {
+                setUserInfo(res.data);
+            });
+        }
     }, [id]);
 
     function submitHandle() {
