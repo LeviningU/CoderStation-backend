@@ -53,6 +53,12 @@ export default defineConfig({
                     path: 'useradd',
                     component: './User/UserAdd',
                 },
+                {
+                    name: '编辑用户',
+                    path: 'useredit/:id',
+                    component: './User/UserEdit',
+                    hideInMenu: true,
+                },
             ],
         },
         {
