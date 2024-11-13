@@ -90,14 +90,26 @@ export default defineConfig({
             icon: 'EditOutlined',
             routes: [
                 {
-                    name: '面试题列表',
+                    name: '题目列表',
                     path: 'interviewlist',
                     component: './Interview/InterviewList',
                 },
                 {
-                    name: '添加面试题',
+                    name: '添加题目',
                     path: 'interviewadd',
                     component: './Interview/InterviewAdd',
+                },
+                {
+                    name: '编辑题目',
+                    path: 'interviewedit/:id',
+                    component: './Interview/InterviewEdit',
+                    hideInMenu: true,
+                },
+                {
+                    name: '题目详情',
+                    path: 'interviewlist/:id',
+                    component: './Interview/InterviewDetail',
+                    hideInMenu: true,
                 },
             ],
         },
