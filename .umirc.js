@@ -116,8 +116,14 @@ export default defineConfig({
         {
             name: '问答',
             path: '/issue',
-            component: './Issue',
             icon: 'ProfileOutlined',
+            component: './Issue/IssueList',
+        },
+        {
+            name: '问答详情',
+            path: '/issue/:id',
+            component: './Issue/IssueDetail',
+            hideInMenu: true,
         },
         {
             name: '评论',

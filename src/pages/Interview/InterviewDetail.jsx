@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useNavigate, useParams, useSelector } from '@umijs/max';
+import { useDispatch, useParams, useSelector } from '@umijs/max';
 
 import { Card, Tag } from 'antd';
 
@@ -9,35 +9,36 @@ import { getInterviewByIdApi } from '@/services/interviewApi';
 import { PageContainer } from '@ant-design/pro-components';
 
 export default function InterviewEdit() {
-    const navigate = useNavigate();
     const { id } = useParams();
+
+    const dispatch = useDispatch();
 
     const [typeName, setTypeName] = useState('');
 
     const typeList = useSelector((state) => state.typeModal.typeList);
 
     useEffect(() => {
-        if (typeList.length > 0) {
-            const type = typeList.find(
-                (item) => item.id === interviewInfo.typeId,
-            );
-            setTypeName(type.typeName);
+        if (!typeList.length) {
+            dispatch({
+                type: 'typeModal/_getTypeList',
+            });
         }
-    }, [typeList]);
+    }, [typeList.length]);
 
     const [interviewInfo, setInterviewInfo] = useState({});
 
     useEffect(() => {
-        if (id) {
-            getInterviewByIdApi(id).then((res) => {
+        (async function () {
+            if (id) {
+                const res = await getInterviewByIdApi(id);
                 setInterviewInfo(res.data);
-            });
-            setTypeName(
-                typeList.find((item) => item.id === interviewInfo.typeId)
-                    .typeName,
-            );
-        }
-    }, [id]);
+                setTypeName(
+                    typeList.find((item) => item._id === res.data.typeId)
+                        ?.typeName,
+                );
+            }
+        })();
+    }, [id, typeList]);
 
     return (
         <PageContainer>
